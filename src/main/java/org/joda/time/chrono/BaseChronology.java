@@ -24,6 +24,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.LocalDateTime;
 import org.joda.time.ReadablePartial;
 import org.joda.time.ReadablePeriod;
 import org.joda.time.field.FieldUtils;
@@ -236,8 +237,19 @@ public abstract class BaseChronology
      * @return the updated instant
      */
     public long set(ReadablePartial partial, long instant) {
-        for (int i = 0, isize = partial.size(); i < isize; i++) {
-            instant = partial.getFieldType(i).getField(this).set(instant, partial.getValue(i));
+        if(partial.getClass().equals(LocalDateTime.class))
+        {
+            for(int i = 0, isize = partial.size(); i < isize; i++)
+            {
+                instant = partial.getFieldType(i).getField(this).setExtended(instant, partial.getValue(i));
+            }
+        }
+        else
+        {
+            for(int i = 0, isize = partial.size(); i < isize; i++)
+            {
+                instant = partial.getFieldType(i).getField(this).set(instant, partial.getValue(i));
+            }
         }
         return instant;
     }

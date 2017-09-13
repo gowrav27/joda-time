@@ -89,6 +89,12 @@ public class TestLocalDateTime_Constructors extends TestCase {
         DateTimeZone.setDefault(zone);
         zone = null;
     }
+    
+    public void testLocalDateTime_Max() throws Throwable {
+        LocalDateTime localDateTime = new LocalDateTime(Long.MAX_VALUE);
+        System.out.println(localDateTime);
+    }
+
 
     //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {

@@ -330,11 +330,21 @@ public final class LocalDateTime
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public LocalDateTime(long instant, Chronology chronology) {
-        chronology = DateTimeUtils.getChronology(chronology);
+        chronology = adjustChronologyForMinMax(instant, chronology);
         
         long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
         iLocalMillis = localMillis;
         iChronology = chronology.withUTC();
+    }
+    
+    private Chronology adjustChronologyForMinMax(long instant, Chronology chronology)
+    {
+        chronology = DateTimeUtils.getChronology(chronology);
+        if(instant == Long.MIN_VALUE || instant == Long.MAX_VALUE)
+        {
+            return chronology.withUTC();
+        }
+        return chronology;
     }
 
     //-----------------------------------------------------------------------
