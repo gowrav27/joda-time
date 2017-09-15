@@ -390,6 +390,7 @@ public final class LocalDateTime
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
         chronology = DateTimeUtils.getChronology(chronology);
+        chronology = adjustChronologyForMinMax(((ReadableInstant) instant).getMillis() ,chronology);
         iChronology = chronology.withUTC();
         int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
         iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
@@ -420,6 +421,7 @@ public final class LocalDateTime
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         chronology = converter.getChronology(instant, chronology);
         chronology = DateTimeUtils.getChronology(chronology);
+        chronology = adjustChronologyForMinMax(((ReadableInstant) instant).getMillis() ,chronology);
         iChronology = chronology.withUTC();
         int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
         iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
